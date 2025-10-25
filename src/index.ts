@@ -1,6 +1,7 @@
 import express from 'express'
 import { getPool } from './db/config';
 import dotenv from 'dotenv';
+import leaverequestroutes from './routers/leaverequest.router';
 
 
 dotenv.config();
@@ -12,6 +13,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send("Hello, express API is running...");
 });
+
+leaverequestroutes(app)
 
 const port = process.env.PORT;
 app.listen(port, () => {
