@@ -19,7 +19,7 @@ export const leavehistory = async(id:number) =>{
         .request()
         .input('id',id)
         .query('SELECT * FROM leaverequest WHERE staffid=@id')
-        return result.recordsets
+        return result.recordset;
 }
 
 export const getleavebyid = async(id:number) =>{
@@ -39,3 +39,26 @@ export const Allleaverequests = async (): Promise<leaverequests[]> => {
         return results.recordset
 }
 
+
+
+export const updateleave = async (id:number, leave:updateleaverequest) => {
+    const pool = await getPool();
+    await pool
+        .request()
+        .input('id',id)
+        .input('leavetypeid', leave.leavetypeid)
+        .input('start_date', leave.start_date)
+        .input('end_date', leave.end_date)
+        .query('UPDATE leaverequest SET leavetypeid=@leavetypeid, start_date=@start_date, end_date=@end_date  WHERE leaveid=@id')
+    return {message:'Your Leave Request Has Been Updated Successfully'}
+}
+
+
+export const deleterequest = async(id:number) =>{
+    const pool = await getPool();
+        await pool
+        .request()
+        .input('id',id)
+        .query('DELETE FROM leaverequest WHERE leaveid=@id')
+        return {message:'Your Leave Request Has Been Deleted Successfully'}
+}

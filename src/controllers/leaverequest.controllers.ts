@@ -40,8 +40,8 @@ export const getleavebyid = async (req:Request, res:Response) => {
     } catch (error:any) {
             if(error.message === 'Invalid leaveid') {
         res.status(400).json({message:'Invalid leaveid'})
-    } else if (error.message == 'Leave Not Existing') {
-        res.status(400).json({message:'Leave Not Existing'})
+    } else if (error.message == 'Leave Not Found') {
+        res.status(400).json({message:'Leave Not Found'})
     } else {
     res.status(500).json({error: 'Internal Server error'})
     }
@@ -57,4 +57,43 @@ export const listallrequests = async (req:Request,res:Response) =>  {
         res.status(500).json({error: 'Internal Server error'})
     }
 }
+
+
+
+
+export const updateleave= async (req:Request, res:Response) => {
+    const id = parseInt(req.params.id)
+    const leave = req.body
+    try{
+        const result = await leaverequest.updateleave(id, leave)
+        res.status(200).json(result)
+    } catch (error:any) {
+            if(error.message === 'Invalid leaveid') {
+        res.status(400).json({message:'Invalid leaveid'})
+    } else if (error.message == 'Leave Not Found') {
+        res.status(400).json({message:'Leave Not Found'})
+    } else {
+    res.status(500).json({error: 'Internal Server error'})
+    }
+    }
+
+}
+
+export const deleteleave = async (req:Request, res:Response) => {
+    const id = parseInt(req.params.id)
+
+    try{
+        const result = await leaverequest.deleteleave(id)
+        res.status(200).json(result)
+    } catch (error:any) {
+        if(error.message === 'Invalid leaveid') {
+            res.status(400).json({message:'Invalid leaveid'})
+    } else if (error.message == 'Leave Not Found') {
+        res.status(400).json({message:'Leave Not Found'})
+    } else {
+    res.status(500).json({error: 'Internal Server error'})
+    }
+}
+}
+
 
