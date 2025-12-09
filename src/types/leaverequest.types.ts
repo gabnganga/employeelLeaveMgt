@@ -1,6 +1,7 @@
 
 
 export interface Newleaverequest{
+    leaveid: number;
      staffid: number;
     leavetypeid: number;
     start_date: Date;

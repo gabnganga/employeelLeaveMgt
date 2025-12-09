@@ -14,7 +14,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const listAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await userService.listUsers();
-    res.status(200).json(users);
+    res.status(200).json({data: users});
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -53,6 +53,29 @@ export const updateUser = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const updatepassword = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const user = req.body;
+
+  try {
+    const result = await userService.updatepassword(id, user);
+    res.status(200).json(result);
+  } catch (error: any) {
+    if (error.message === "Invalid staffid") {
+      res.status(400).json({ message: "Invalid staffid" });
+    } else if (error.message === "User not found") {
+      res.status(400).json({ message: "User not found" });
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+};
+
+
+
+
+
 
 export const deleteUser = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);

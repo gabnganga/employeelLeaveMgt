@@ -34,6 +34,22 @@ export const getUserById = async (id: number) => {
 
 
 export const updateUser = async (id: number, user: User) => {
+
+  if (isNaN(id)) {
+    throw new Error("Invalid staffid");
+  }
+
+  const existingUser = await userRepository.getUserById(id);
+  if (!existingUser) {
+    throw new Error("User not found");
+  }
+
+  return await userRepository.updateUser(id, user);
+}
+
+
+
+export const updatepassword = async (id: number, user: User) => {
        if (user.password) {
         user.password = await bcrypt.hash(user.password, 10);
         console.log(user.password);
@@ -47,8 +63,9 @@ export const updateUser = async (id: number, user: User) => {
     throw new Error("User not found");
   }
 
-  return await userRepository.updateUser(id, user);
+  return await userRepository.updatepassword(id, user);
 }
+
 
 
 export const deleteUser = async (id: number) => {

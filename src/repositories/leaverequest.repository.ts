@@ -18,9 +18,24 @@ export const leavehistory = async(id:number) =>{
     const result = await pool
         .request()
         .input('id',id)
-        .query('SELECT * FROM leaverequest WHERE staffid=@id')
-        return result.recordset;
+        .query(`
+            SELECT 
+                lr.leaveid,
+                lr.staffid,
+                lt.leavetypeid,
+                lt.leavetype,
+                lr.start_date,
+                lr.end_date,
+                c.status,
+                c.comment
+            FROM leaverequest lr
+            JOIN leavetype lt ON lr.leavetypeid = lt.leavetypeid
+            LEFT JOIN comments c ON lr.leaveid = c.leaveid
+            WHERE lr.staffid=@id
+        `)
+    return result.recordset;
 }
+
 
 export const getleavebyid = async(id:number) =>{
     const pool = await getPool();
@@ -34,10 +49,28 @@ export const getleavebyid = async(id:number) =>{
 
 
 export const Allleaverequests = async (): Promise<leaverequests[]> => {
-       const pool = await getPool();
-        const results = await pool.request().query('SELECT * FROM leaverequest')
-        return results.recordset
-}
+    const pool = await getPool();
+    const results = await pool.request().query(`
+        SELECT
+            lr.leaveid, 
+            u.staffid,
+            u.username,
+            lt.leavetype,
+            lr.start_date,
+            lr.end_date,
+            c.status,
+            c.comment
+        FROM leaverequest lr
+        JOIN users u ON lr.staffid = u.staffid
+        JOIN leavetype lt ON lr.leavetypeid = lt.leavetypeid
+        LEFT JOIN comments c ON lr.leaveid = c.leaveid
+        WHERE c.status IN ('Pending', 'Approved','Rejected') or c.status IS NULL
+        ORDER BY lr.leaveid ASC
+    `);
+
+    return results.recordset;
+};
+
 
 
 

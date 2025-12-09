@@ -42,11 +42,20 @@ export const updateUser = async (id: number, user: User) => {
   await pool
     .request()
     .input('id',id)
-    .input('username',user.username)
-    .input('email',user.email)
+    .input('username',user.username )
+    .input('email',user.email )
+    .input('role',user.role )
+    .query('UPDATE users SET username=@username, email=@email, role=@role  WHERE staffid=@id');
+return { message: 'User has been updated successfully'};
+};
+
+export const updatepassword = async (id: number, user: User) => {
+  const pool = await getPool();
+  await pool
+    .request()
+    .input('id',id)
     .input('password',user.password)
-    .input('role',user.role)
-    .query('UPDATE users SET username=@username, email=@email, password=@password, role=@role  WHERE staffid=@id');
+    .query('UPDATE users SET  password=@password WHERE staffid=@id');
 return { message: 'User has been updated successfully'};
 };
 

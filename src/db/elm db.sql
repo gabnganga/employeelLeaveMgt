@@ -38,8 +38,8 @@ CREATE TABLE comments (
     commentid INT  PRIMARY KEY IDENTITY(1,1),
     leaveid INT NOT NULL,
     comment VARCHAR(100),
-    status VARCHAR(55) DEFAULT 'Pending',
-    managerid INT DEFAULT 5674,
+    status VARCHAR(55),
+    managerid INT,
     FOREIGN KEY (leaveid) REFERENCES leaverequest(leaveid),
     FOREIGN KEY (managerid) REFERENCES users(staffid)
 );

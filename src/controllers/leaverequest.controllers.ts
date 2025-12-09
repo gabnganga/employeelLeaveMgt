@@ -52,7 +52,7 @@ export const getleavebyid = async (req:Request, res:Response) => {
 export const listallrequests = async (req:Request,res:Response) =>  {
     try {
         const leaves = await leaverequest.listrequests()
-        res.status(200).json(leaves)
+        res.status(200).json({data: leaves})
     } catch (error) {
         res.status(500).json({error: 'Internal Server error'})
     }
